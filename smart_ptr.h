@@ -1,14 +1,24 @@
 //SmartPointer Class
+#include <iostream>
+
 template <typename T>
 class smart_ptr {
 public:
-	smart_ptr();
+	smart_ptr() {
 	// Create a smart_ptr that is initialized to nullptr. The
 	// reference count should be initialized to nullptr.
-	explicit smart_ptr(T* raw_ptr);
+		ptr_ = nullptr;
+		ref_ = nullptr;
+	}
+
+	explicit smart_ptr(T* raw_ptr) {
 	// Create a smart_ptr that is initialized to raw_ptr. The
 	// reference count should be one. Make sure it points to
 	// the same pointer as the raw_ptr.
+		ptr_ = raw_ptr;
+	}
+	
+
 	smart_ptr(const smart_ptr& rhs);
 	// Copy construct a pointer from rhs. The reference count
 	// should be incremented by one.
@@ -36,11 +46,38 @@ public:
 	// The dereference operator shall return a reference to
 	// the referred object. Throws null_ptr_exception on
 	// invalid access.
-	T* operator->();
-	// The arrow operator shall return the pointer ptr_.
-	// Throws null_ptr_exception on invalid access.
-	~smart_ptr(); // deallocate all dynamic memory
+
+	T* operator->() {
+		// The arrow operator shall return the pointer ptr_.
+		// Throws null_ptr_exception on invalid access.
+		return ptr_;
+	}
+	
+	T getVal()
+	{
+		return *ptr_;
+	}
+	~smart_ptr() {
+		std::cout << "deleted stuff \n";
+		delete ptr_; 
+	}
+		// deallocate all dynamic memory
 private:
 	T* ptr_; // pointer to the referred object
 	int* ref_; // pointer to a reference count
+};
+
+class ref
+{
+private:
+	int counter;
+public:
+	void addRef()
+	{
+		counter++;
+	}
+	int release()
+	{
+		return --counter;
+	}
 };
