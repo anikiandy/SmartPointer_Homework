@@ -1,6 +1,24 @@
 //SmartPointer Class
 #include <iostream>
 
+class  ref
+{
+private:
+	int counter;
+public:
+
+	void addRef()
+	{
+		counter++;
+	}
+	int release()
+	{
+		return --counter;
+	}
+	int checkRef() {
+		return counter;
+	}
+};
 template <typename T>
 class smart_ptr {
 public:
@@ -15,13 +33,21 @@ public:
 	// Create a smart_ptr that is initialized to raw_ptr. The
 	// reference count should be one. Make sure it points to
 	// the same pointer as the raw_ptr.
+		ref_ = new ref();
+		ref_->addRef();
 		ptr_ = raw_ptr;
 	}
 	
 
-	smart_ptr(const smart_ptr& rhs);
+	smart_ptr(const smart_ptr& rhs) {
 	// Copy construct a pointer from rhs. The reference count
 	// should be incremented by one.
+		ptr_ = rhs.ptr_;
+		ref_ = rhs.ref_;
+		rhs.ref_->addRef();
+
+	}
+
 	smart_ptr(smart_ptr&& rhs);
 	// Move construct a pointer from rhs.
 	smart_ptr& operator=(const smart_ptr& rhs);
@@ -36,16 +62,22 @@ public:
 	// count of one, this function will do nothing and return
 	// false. Otherwise, the referred to object's reference
 	// count will be decreased and a new deep copy of the
-	
 	// object will be created. This new copy will be the
 	// object that this smart_ptr points and its reference
 	// count will be one.
-	int ref_count() const;
-	// Returns the reference count of the pointed to data.
-	T& operator*();
+
+	int ref_count() const {
+		// Returns the reference count of the pointed to data.
+		return ref_->checkRef();
+	}
+	
+	T& operator*() {
 	// The dereference operator shall return a reference to
 	// the referred object. Throws null_ptr_exception on
 	// invalid access.
+		return *ptr_;
+	}
+	
 
 	T* operator->() {
 		// The arrow operator shall return the pointer ptr_.
@@ -58,26 +90,24 @@ public:
 		return *ptr_;
 	}
 	~smart_ptr() {
-		std::cout << "deleted stuff \n";
-		delete ptr_; 
+		if (ref_ != nullptr)
+		{
+			if (ref_->checkRef() > 1)
+			{
+				ref_->release();
+				std::cout << "releasing one ref\n";
+			}
+			else
+			{
+				std::cout << "deleting memory\n";
+				delete ptr_;
+			}
+		}
+
 	}
 		// deallocate all dynamic memory
 private:
 	T* ptr_; // pointer to the referred object
-	int* ref_; // pointer to a reference count
+	ref* ref_; // pointer to a reference count
 };
 
-class ref
-{
-private:
-	int counter;
-public:
-	void addRef()
-	{
-		counter++;
-	}
-	int release()
-	{
-		return --counter;
-	}
-};
