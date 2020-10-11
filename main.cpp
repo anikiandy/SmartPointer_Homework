@@ -27,6 +27,7 @@ int main()
 	second = steal;
 	test = second;
 	test2 = test;
+	test2.clone();
 
 	return 0;
 }

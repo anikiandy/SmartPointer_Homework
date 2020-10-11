@@ -78,14 +78,29 @@ public:
 		rhs.ref_ = nullptr;
 	}
 
-	bool clone();
-	// If the smart_ptr is either nullptr or has a reference
-	// count of one, this function will do nothing and return
-	// false. Otherwise, the referred to object's reference
-	// count will be decreased and a new deep copy of the
-	// object will be created. This new copy will be the
-	// object that this smart_ptr points and its reference
-	// count will be one.
+	bool clone()	{
+		// If the smart_ptr is either nullptr or has a reference
+		// count of one, this function will do nothing and return
+		// false. 
+		if (ref_ == nullptr || ref_->checkRef() == 1)return false;
+
+		//Otherwise, the referred to object's reference
+		// count will be decreased
+		this->ref_->release();
+
+		//and a new deep copy of the
+		// object will be created. This new copy will be the
+		// object that this smart_ptr points and its reference
+		// count will be one.
+
+		T *tempVal = new T; //new  pointer to variabl type T
+		*tempVal = this->getVal();//Copy the data from this to tempVal
+		ptr_ = tempVal; //point ptr_ to the new copy
+		std::cout << "this int: " << this->getVal();
+		ref_ = new ref(); //make a new ref class
+		ref_->addRef(); //increment new ref
+	}
+
 
 	int ref_count() const {
 		// Returns the reference count of the pointed to data.
