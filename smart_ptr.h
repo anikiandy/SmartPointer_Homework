@@ -42,21 +42,42 @@ public:
 	smart_ptr(const smart_ptr& rhs) {
 	// Copy construct a pointer from rhs. The reference count
 	// should be incremented by one.
-		ptr_ = rhs.ptr_;
-		ref_ = rhs.ref_;
-		rhs.ref_->addRef();
+		ptr_ = rhs.ptr_;//point to address of rhs ptr_
+		ref_ = rhs.ref_;//point ref to rhs ref_
+		ref_->addRef(); //increment ref count
 
 	}
 
-	smart_ptr(smart_ptr&& rhs);
-	// Move construct a pointer from rhs.
-	smart_ptr& operator=(const smart_ptr& rhs);
-	// This assignment should make a shallow copy of the
-	// right-hand side's pointer data. The reference count
-	// should be incremented as appropriate.
-	smart_ptr& operator=(smart_ptr&& rhs);
-	// This move assignment should steal the right-hand side's
-	// pointer data.
+	smart_ptr(smart_ptr&& rhs) {
+		// Move construct a pointer from rhs.
+		ptr_ = rhs.ptr_;//point new smart pointer ptr to rhs ptr
+		ref_ = rhs.ref_;//point new smart pointer ref to rhs ref
+		rhs.ref_ = nullptr; //point rhs to nullptr
+		rhs.ptr_ = nullptr;//point rhs to nullptr
+	}
+	
+	smart_ptr& operator=(const smart_ptr& rhs) {
+		// This assignment should make a shallow copy of the
+		// right-hand side's pointer data. The reference count
+		// should be incremented as appropriate.
+		this->~smart_ptr();
+		this->ptr_ = rhs.ptr_;
+		this->ref_ = rhs.ref_;
+		this->ref_->addRef();
+		return *this;
+	}
+
+	smart_ptr& operator=(smart_ptr&& rhs) {
+		// This assignment should make a shallow copy of the
+		// right-hand side's pointer data. The reference count
+		// should be incremented as appropriate.
+		this->~smart_ptr();
+		this->ptr_ = rhs.ptr_;
+		this->ref_ = rhs.ref_;
+		rhs.ptr_ = nullptr;
+		rhs.ref_ = nullptr;
+	}
+
 	bool clone();
 	// If the smart_ptr is either nullptr or has a reference
 	// count of one, this function will do nothing and return
@@ -68,7 +89,8 @@ public:
 
 	int ref_count() const {
 		// Returns the reference count of the pointed to data.
-		return ref_->checkRef();
+		if (ref_ != nullptr) return ref_->checkRef();
+		else return 0;
 	}
 	
 	T& operator*() {
@@ -101,6 +123,7 @@ public:
 			{
 				std::cout << "deleting memory\n";
 				delete ptr_;
+				delete ref_; 
 			}
 		}
 
