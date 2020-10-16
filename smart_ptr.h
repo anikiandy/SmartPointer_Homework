@@ -96,7 +96,7 @@ public:
 		T *tempVal = new T; //new  pointer to variabl type T
 		*tempVal = this->getVal();//Copy the data from this to tempVal
 		ptr_ = tempVal; //point ptr_ to the new copy
-		std::cout << "this int: " << this->getVal();
+		std::cout << "this int: " << this->getVal() << std::endl;
 		ref_ = new ref(); //make a new ref class
 		ref_->addRef(); //increment new ref
 	}
