@@ -32,7 +32,16 @@ int main()
 	test2 = test;
 	test2.clone();
 
-	cout << "test dereference operator overload *test: " << *test << endl;
+	test2.~smart_ptr(); //destruct clones ptr
+
+	try {
+		std::cout << "value: " << *test2 << std::endl;
+	}
+	catch (null_ptr_exception &e)
+	{
+		std::cout << "caught exception: " << e.what() << endl;
+	}
+	std::cout << "test dereference operator overload *test: " << *test << endl;
 
 	
 	return 0;

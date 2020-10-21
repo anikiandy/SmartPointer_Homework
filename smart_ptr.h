@@ -1,5 +1,16 @@
 //SmartPointer Class
 #include <iostream>
+#include <stdexcept>
+//using namespace std;
+
+class null_ptr_exception :public std::runtime_error
+{
+public:
+	null_ptr_exception( std::string s1) : std::runtime_error(s1) {
+	}
+
+
+};
 
 class  ref
 {
@@ -112,6 +123,7 @@ public:
 	// The dereference operator shall return a reference to
 	// the referred object. Throws null_ptr_exception on
 	// invalid access.
+		if (ptr_ == nullptr) throw null_ptr_exception("Null_ptr_exception"); 
 		return *ptr_;
 	}
 	
@@ -119,6 +131,7 @@ public:
 	T* operator->() {
 		// The arrow operator shall return the pointer ptr_.
 		// Throws null_ptr_exception on invalid access.
+		if (ptr_ == nullptr)throw null_ptr_exception("null_ptr_exception");
 		return ptr_;
 	}
 	
@@ -138,7 +151,9 @@ public:
 			{
 				std::cout << "deleting memory\n";
 				delete ptr_;
+				ptr_ = nullptr;
 				delete ref_; 
+				ref_ = nullptr;
 			}
 		}
 
