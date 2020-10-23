@@ -1,3 +1,6 @@
+#ifndef SMART_PTR_H
+#define SMAR_PTR_H
+
 //SmartPointer Class
 #include <iostream>
 #include <stdexcept>
@@ -8,8 +11,6 @@ class null_ptr_exception :public std::runtime_error
 public:
 	null_ptr_exception( std::string s1) : std::runtime_error(s1) {
 	}
-
-
 };
 
 class  ref
@@ -107,7 +108,7 @@ public:
 		T *tempVal = new T; //new  pointer to variabl type T
 		*tempVal = this->getVal();//Copy the data from this to tempVal
 		ptr_ = tempVal; //point ptr_ to the new copy
-		std::cout << "this int: " << this->getVal() << std::endl;
+	//	std::cerr << "this int: " << this->getVal() << std::endl;
 		ref_ = new ref(); //make a new ref class
 		ref_->addRef(); //increment new ref
 	}
@@ -145,11 +146,10 @@ public:
 			if (ref_->checkRef() > 1)
 			{
 				ref_->release();
-				std::cout << "releasing one ref\n";
+			//	std::cerr << "releasing one ref\n";
 			}
 			else
 			{
-				std::cout << "deleting memory\n";
 				delete ptr_;
 				ptr_ = nullptr;
 				delete ref_; 
@@ -164,3 +164,4 @@ private:
 	ref* ref_; // pointer to a reference count
 };
 
+#endif
