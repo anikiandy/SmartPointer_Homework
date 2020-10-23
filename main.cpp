@@ -16,6 +16,9 @@ int main()
 	std::cout << "smart int ref cnt : " << smart_int.ref_count() << std::endl;
 	smart_ptr<int>another_int(smart_int);
 	std::cout << "smart int ref cnt : " << smart_int.ref_count() << std::endl;
+	smart_ptr<int> donkey; 
+	smart_int = donkey;
+	std::cout << "smart int ref cnt : " << smart_int.ref_count() << std::endl;
 	//makes test smart pointer based on raw pointer p
 	smart_ptr <theThing> test = smart_ptr<theThing>(p);
 
@@ -40,6 +43,8 @@ int main()
 	test = second;
 	test2 = test;
 	test2.clone();
+
+	std::cout << "clone ref cnt: " << test2.ref_count() << " clone ptr: " << test2.getVal() << std::endl;
 
 	test2.~smart_ptr(); //destruct clones ptr
 

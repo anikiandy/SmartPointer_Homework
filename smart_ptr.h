@@ -56,7 +56,8 @@ public:
 	// should be incremented by one.
 		ptr_ = rhs.ptr_;//point to address of rhs ptr_
 		ref_ = rhs.ref_;//point ref to rhs ref_
-		ref_->addRef(); //increment ref count
+		
+		if(ref_!=nullptr)ref_->addRef(); //increment ref count
 
 	}
 
@@ -72,10 +73,11 @@ public:
 		// This assignment should make a shallow copy of the
 		// right-hand side's pointer data. The reference count
 		// should be incremented as appropriate.
+
 		this->~smart_ptr();
 		this->ptr_ = rhs.ptr_;
 		this->ref_ = rhs.ref_;
-		this->ref_->addRef();
+		if (ref_ != nullptr) this->ref_->addRef();
 		return *this;
 	}
 
@@ -146,7 +148,7 @@ public:
 			if (ref_->checkRef() > 1)
 			{
 				ref_->release();
-			//	std::cerr << "releasing one ref\n";
+				std::cerr << "releasing one ref\n";
 			}
 			else
 			{
