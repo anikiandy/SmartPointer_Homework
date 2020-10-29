@@ -22,7 +22,7 @@ private:
 void removeBad(list<Movie*>& li)
 {
 }
-void test()
+void test3()
 {
 	int a[8] = { 85, 80, 30, 70, 20, 15, 90, 10 };
 	list<Movie*> x;
@@ -49,7 +49,7 @@ void test()
 }
 int main3()
 {
-	test();
+	//test();
 	cout << "Passed" << endl;
 	return 0;
 }

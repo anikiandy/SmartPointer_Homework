@@ -10,11 +10,21 @@ using namespace std;
 // the same as in the original list.
 void removeOdds(list<int>& li)
 {
+	for (std::list<int>::iterator it = li.begin(); it != li.end(); it++) //iterate through list
+	{
+		if (*it % 2 != 0)
+		{
+			*it = 3;//change all odd integers to 3
+		}
+	}
+	li.remove(3); //remove all elements == 3
 }
 void test()
 {
 	int a[8] = { 2, 8, 5, 6, 7, 3, 4, 1 };
-	list<int> x(a, a + 8); // construct x from the array
+	//constructor take a start memory location and and end a is the start of the array a+8 ==std::end(a)
+	list<int> x(a, a+8); // construct x from the array
+
 	assert(x.size() == 8 && x.front() == 2 && x.back() == 1);
 	removeOdds(x);
 	assert(x.size() == 4);

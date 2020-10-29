@@ -10,7 +10,7 @@ using namespace std;
 void removeOdds(vector<int>& v)
 {
 }
-void test()
+void test2()
 {
 	int a[8] = { 2, 8, 5, 6, 7, 3, 4, 1 };
 	vector<int> x(a, a + 8); // construct x from the array
@@ -24,6 +24,8 @@ void test()
 }
 int main2()
 {
-	test();
+	//test();
 	cout << "Passed" << endl;
+	return 0;
+
 }

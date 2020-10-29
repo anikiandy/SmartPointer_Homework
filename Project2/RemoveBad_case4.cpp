@@ -20,7 +20,7 @@ private:
 void removeBad(vector<Movie*>& v)
 {
 }
-void test() {
+void test4() {
 	int a[8] = { 85, 80, 30, 70, 20, 15, 90, 10 };
 	vector<Movie*> x;
 	for (int k = 0; k < 8; k++)
@@ -43,9 +43,9 @@ void test() {
 }
 
 
-int main()
+int main4()
 {
-	test();
+	//test();
 	cout << "Passed" << endl;
 	return 0;
 }
