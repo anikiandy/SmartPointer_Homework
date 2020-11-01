@@ -21,6 +21,23 @@ private:
 // the same as in the original list.
 void removeBad(list<Movie*>& li)
 {
+	//Create a new list of movie objects
+	list<Movie*>temp;
+
+	//interate through li. 
+
+	for (std::list<Movie*>::iterator it = li.begin(); it != li.end(); it++)
+	{
+		Movie* mv = *it;
+		//copy movie object into temporary list
+		if (mv->rating() < 50)
+		{
+			temp.emplace_back(mv);
+		}
+	}
+	
+	//swap lists
+	li.swap(temp);
 }
 void test3()
 {
@@ -47,7 +64,7 @@ void test3()
 	for (int k = 0; k < 4; k++)
 		assert(destroyedOnes[k] == expectGone[k]);
 }
-int main3()
+int main()
 {
 	//test();
 	cout << "Passed" << endl;
