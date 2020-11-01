@@ -9,6 +9,13 @@ using namespace std;
 // the same as in the original vector.
 void removeOdds(vector<int>& v)
 {
+	vector<int>::iterator ptr; //iterator for vector
+	vector<int>temp; //temporary vector 
+	for (ptr = v.begin(); ptr < v.end(); ptr++)
+	{
+		if (*ptr % 2 == 0 ) temp.emplace_back(*ptr);//use emplaceback to add even ints to temp vector
+	}
+	v.swap(temp); //swap vector 
 }
 void test2()
 {
@@ -22,9 +29,9 @@ void test2()
 	for (int k = 0; k < 4; k++)
 		assert(x[k] == expect[k]);
 }
-int main2()
+int main()
 {
-	//test();
+	test2();
 	cout << "Passed" << endl;
 	return 0;
 
