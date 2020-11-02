@@ -10,7 +10,14 @@ const int MAXDICTWORDS = 30000; // Max words that can be read in
 
 int loadDictionary(istream &dictfile, vector<string>& dict)
 {
-	return -1; // This compiles, but this is incorrect
+    dict.clear();
+    string word;
+    while (getline(dictfile, word))
+    {
+        dict.emplace_back(word);
+    }
+    
+    return dict.size();
 }
 
 int permute(string word, vector<string>& dict, vector<string>& results)
