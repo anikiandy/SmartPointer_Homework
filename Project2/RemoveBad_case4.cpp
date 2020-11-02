@@ -19,6 +19,22 @@ private:
 // the same as in the original vector.
 void removeBad(vector<Movie*>& v)
 {
+	//Create a new list of movie objects
+	vector<Movie*>temp;
+
+	//interate through li. 
+
+	for (std::vector<Movie*>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		Movie* mv = *it;
+
+		if (mv->rating() > 50)temp.emplace_back(mv); //If movie is better than 50 add to temp list
+
+		else mv->~Movie(); //else, it is less than or equal to 50, so destroy it
+	}
+
+	//swap lists
+	v.swap(temp);
 }
 void test4() {
 	int a[8] = { 85, 80, 30, 70, 20, 15, 90, 10 };

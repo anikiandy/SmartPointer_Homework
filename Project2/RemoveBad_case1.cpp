@@ -87,6 +87,25 @@ void removeBad(list<Movie*>& li)
 	li.swap(temp);
 }
 
+void removeBad(vector<Movie*>& v) //overload vector of movie pointers
+{
+	//Create a new list of movie objects
+	vector<Movie*>temp;
+
+	//interate through li. 
+
+	for (std::vector<Movie*>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		Movie* mv = *it;
+
+		if (mv->rating() > 50)temp.emplace_back(mv); //If movie is better than 50 add to temp list
+
+		else mv->~Movie(); //else, it is less than or equal to 50, so destroy it
+	}
+
+	//swap lists
+	v.swap(temp);
+}
 void test2() //test for vector
 {
 	int a[8] = { 2, 8, 5, 6, 7, 3, 4, 1 };
@@ -126,6 +145,28 @@ void test3()
 		assert(destroyedOnes[k] == expectGone[k]);
 }
 
+void test4() {
+	int a[8] = { 85, 80, 30, 70, 20, 15, 90, 10 };
+	vector<Movie*> x;
+	for (int k = 0; k < 8; k++)
+		x.push_back(new Movie(a[k]));
+	assert(x.size() == 8 && x.front()->rating() == 85 &&
+		x.back()->rating() == 10);
+	removeBad(x);
+	assert(x.size() == 4 && destroyedOnes.size() == 4);
+	vector<int> v;
+	for (int k = 0; k < 4; k++)
+		v.push_back(x[k]->rating());
+	sort(v.begin(), v.end());
+	int expect[4] = { 70, 80, 85, 90 };
+	for (int k = 0; k < 4; k++)
+		assert(v[k] == expect[k]);
+	sort(destroyedOnes.begin(), destroyedOnes.end());
+	int expectGone[4] = { 10, 15, 20, 30 };
+	for (int k = 0; k < 4; k++)
+		assert(destroyedOnes[k] == expectGone[k]);
+}
+
 int main() {
 	test();
 	cout << "Passed test()" << endl;
@@ -133,5 +174,8 @@ int main() {
 	cout << "Passed test2()" << endl;
 	test3();
 	cout << "Passed test3()" << endl;
+	destroyedOnes.clear();//need to clear vector to run test 4
+	test4();
+	cout << " PAssed Test4()" << endl;
 	return 0;
 }
