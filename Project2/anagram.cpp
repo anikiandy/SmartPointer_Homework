@@ -30,7 +30,7 @@ void display(vector<string>& results)
 	return; // This compiles, but this is incorrect
 }
 
-int main()
+int mainAna()
 {
     vector<string> results(MAXRESULTS);
     vector<string> dict(MAXDICTWORDS);
