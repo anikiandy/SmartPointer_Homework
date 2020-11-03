@@ -69,6 +69,10 @@ int permute(string word, vector<string>& dict, vector<string>& results)
 
 void display(vector<string>& results)
 {
+	for (std::vector<string>::iterator it = results.begin(); it != results.end(); it++)
+	{
+		cout << "Match: " << *it << endl;
+	}
 	return; // This compiles, but this is incorrect
 }
 
