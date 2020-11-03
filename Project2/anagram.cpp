@@ -22,7 +22,49 @@ int loadDictionary(istream &dictfile, vector<string>& dict)
 
 int permute(string word, vector<string>& dict, vector<string>& results)
 {
-	return -1; // This compiles, but this is incorrect
+	results.clear();
+	int matches = 0; 
+	bool match;
+	string check; 
+	//iterate through dictionary vector
+	for (std::vector<string>::iterator it = dict.begin(); it != dict.end(); it++)
+	{
+		if (it->length() == word.length())//if string lengths match then check if chars are in word
+		{
+			//copy word into temp vector
+			check = word;
+			//iterate through chars in dictionary word with string iterator
+			for (std::string::iterator ch = it->begin(); ch != it->end(); ++ch)
+			{
+				//iterate through check word chars 
+				for (std::string::iterator l = check.begin(); l != check.end(); l++)
+				{
+					if (*l == *ch) // found a matching char
+					{
+						*l = ' '; //replace matching char in check with white space
+						break;
+					}
+				}//iterate one letter of dict word through check word
+			}//finished iterating all letters of word
+			//check if check is all whitespace
+			match = true; //set match flag to true
+			for (std::string::iterator ch = check.begin(); ch != check.end(); ch++)
+			{
+				if (*ch != ' ') //found non whitespace meaning the word didnt match
+				{
+					match = false;
+				}
+			}
+			if (match == true)
+			{
+				matches++; //found a match so increment matches 
+				results.emplace_back(*it); //eadd it word to results
+			}
+		}
+
+	}
+	return matches; // Return count of matches
+	
 }
 
 void display(vector<string>& results)
@@ -30,7 +72,7 @@ void display(vector<string>& results)
 	return; // This compiles, but this is incorrect
 }
 
-int mainAna()
+int main()
 {
     vector<string> results(MAXRESULTS);
     vector<string> dict(MAXDICTWORDS);

@@ -167,7 +167,7 @@ void test4() {
 		assert(destroyedOnes[k] == expectGone[k]);
 }
 
-int main() {
+int main1() {
 	test();
 	cout << "Passed test()" << endl;
 	test2();
