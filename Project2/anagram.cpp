@@ -32,7 +32,7 @@ int permute(string word, vector<string>& dict, vector<string>& results)
 		if (it->length() == word.length())//if string lengths match then check if chars are in word
 		{
 			//copy word into temp vector
-			check = word;
+			check = word; //use check string as a temporary string object to manipulate during checks
 			//iterate through chars in dictionary word with string iterator
 			for (std::string::iterator ch = it->begin(); ch != it->end(); ++ch)
 			{
