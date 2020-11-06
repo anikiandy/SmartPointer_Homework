@@ -4,13 +4,59 @@
 #include <fstream>
 using namespace std;
 
-struct priceChange
+struct priceNode
 {
 	int day; 
 	int price;
-	priceChange *next;
-	priceChange *last; 
+	priceNode *next;
+	priceNode *last; 
+	priceNode(int d, int p)
+	{
+		day = d;
+		price = p; 
+		next = nullptr;
+		last = nullptr;
+	}
+	priceNode()
+	{
+		day = 0, price = 0, next = nullptr, last = nullptr;
+	}
 };
+
+class stockPrices
+{
+private:
+	priceNode * HEAD;
+public:
+	stockPrices() //create empty stockPrice object 
+	{
+		HEAD = nullptr;
+	}
+	
+	~stockPrices()
+	{
+
+	}
+	void priceChange(int d, int p)
+	{
+		priceNode *newData = new priceNode(d, p); //create new priceNode
+		if (HEAD == nullptr)HEAD = newData; //if head is at nullptr then the list is empty-> add first datapoint
+		else
+		{
+			priceNode *checkNode = HEAD; 
+			while (checkNode != nullptr)
+			{
+				if (checkNode->next == nullptr)
+				{
+					checkNode->next = newData;
+					return;
+				}
+				checkNode = checkNode->next;
+			}
+		}
+	}
+};
+
 
 struct transaction
 {
@@ -121,13 +167,19 @@ public:
 vector<string> findPotentialBadTraders(vector<string> v)
 {
 	users input = users();
+	stockPrices prices = stockPrices();
 
+	//check add lines
 	input.addLine("andy", 0, 10);
 	input.addLine("andy", 1, 120);
 	input.addLine("andy", 3, 10);
-
 	input.addLine("bolo", 23, 20);
 	input.addLine("jeanne", 0, 10);
+
+	//check add priceNode
+	prices.priceChange(0, 30);
+	prices.priceChange(3, 20);
+
 	for (string s : v) // iterate each string in v
 	{
 		for (char c : s)
