@@ -94,14 +94,19 @@ int main()
 
     dictfile.close();
 
-    cout << "Please enter a string for an anagram: ";
-    cin >> word;
+	while (true)
+	{
+		cout << "Please enter a string for an anagram: ";
+		cin >> word;
 
-    int numMatches = permute(word, dict, results);
-    if (!numMatches)
-        cout << "No matches found" << endl;
-    else
-        display(results);
-
+		int numMatches = permute(word, dict, results);
+		if (!numMatches)
+		{
+			cout << "No matches found" << endl;
+			break;
+		}
+		else
+			display(results);
+	}
 	return 0;
 }
