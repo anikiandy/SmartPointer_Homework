@@ -162,12 +162,27 @@ public:
 			HEAD = newPerson; //point HEAD to new person
 		}
 	}
+
+	void getUsers(vector<string> &v)
+	{
+		v.clear();
+		person *checker = HEAD;
+		
+		while (checker != nullptr)
+		{
+			v.emplace_back(checker->name);
+			checker = checker->next;
+		}
+		
+		
+	}
 };
 
 vector<string> findPotentialBadTraders(vector<string> v)
 {
 	users input = users();
 	stockPrices prices = stockPrices();
+	vector<string>people;
 
 	//check add lines
 	input.addLine("andy", 0, 10);
@@ -175,14 +190,17 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	input.addLine("andy", 3, 10);
 	input.addLine("bolo", 23, 20);
 	input.addLine("jeanne", 0, 10);
-
+	
+	input.getUsers(people);
 	//check add priceNode
 	prices.priceChange(0, 30);
 	prices.priceChange(3, 20);
 
 	for (string s : v) // iterate each string in v
 	{
-		for (char c : s)
+		string name;
+		int day, price, shares;
+		for (char c : s) 
 		{
 			
 		}
