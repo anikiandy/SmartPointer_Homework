@@ -55,6 +55,28 @@ public:
 			}
 		}
 	}
+	void getChangeDays(vector<int>&v) //add days which have changes into vector v
+	{
+		priceNode *checker = HEAD;
+		v.clear();
+		while (checker != nullptr)
+		{
+			v.emplace_back(checker->day);
+			checker = checker->next;
+		}
+
+	}
+
+	int dayPrice(int d) //return stock price at given day
+	{
+		//int price = 0;
+		priceNode *checker = HEAD;
+		while (checker != nullptr)
+		{
+			if (checker->day <= d && (checker->next->day > d || checker->next ==nullptr) ) return checker->price;
+			checker = checker->next;
+		}return 0;
+	}
 };
 
 
@@ -181,6 +203,7 @@ public:
 	{
 		person *checkPerson = HEAD;
 		transaction *checkT = nullptr;
+		n--;
 		if (n < 0) return false; 
 		while (checkPerson != nullptr)// loop through users
 		{
@@ -228,7 +251,7 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	users input = users();
 	stockPrices prices = stockPrices();
 	vector<string>people;
-
+	transaction tranny;
 	//check add lines
 	input.addLine("andy", 0, 10);
 	input.addLine("andy", 1, 120);
@@ -237,10 +260,17 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	input.addLine("jeanne", 0, 10);
 	
 	int x = input.transactionCount("andy");
+	input.getTransaction("andy", 2, tranny);
 	input.getUsers(people);
 	//check add priceNode
 	prices.priceChange(0, 30);
 	prices.priceChange(3, 20);
+	prices.priceChange(4, 23);
+	prices.priceChange(6, 240);
+
+	x = prices.dayPrice(5);
+	vector<int>daydos;
+	prices.getChangeDays(daydos);
 
 	for (string s : v) // iterate each string in v
 	{
