@@ -163,7 +163,7 @@ public:
 		}
 	}
 
-	void getUsers(vector<string> &v)
+	void getUsers(vector<string> &v) //function which takes a vector argument and populates it with all names in the list
 	{
 		v.clear();
 		person *checker = HEAD;
@@ -175,6 +175,51 @@ public:
 		}
 		
 		
+	}
+
+	bool getTransaction(string name, int n, transaction &t) //takes name, number, and transaction address. copies information from number transaction to transaction t. returns true if transaction exists
+	{
+		person *checkPerson = HEAD;
+		transaction *checkT = nullptr;
+		if (n < 0) return false; 
+		while (checkPerson != nullptr)// loop through users
+		{
+			if (checkPerson->name == name) //check name matches user
+			{
+				checkT = checkPerson->t; //go down transaction list
+				for (int i = 0; i < n; i++)//go from first transaction to n transaction
+				{
+					if (checkT == nullptr) return false; //if checkT hits nullptr then n was greater than list
+					checkT = checkT->next;
+				}
+				t.day = checkT->day;
+				t.shares = checkT->shares;
+				return true;
+							}
+			else checkPerson = checkPerson->next; //name doesnt match check next user
+		}//finished looping through users didnt' find match
+		return false;
+	}
+
+	int transactionCount(string n)
+	{
+		int count =0;
+		person *check = HEAD;
+		transaction *c;
+		while (check != nullptr)
+		{
+			if (check->name == n)
+			{
+				c = check->t;
+				
+				while (c != nullptr)
+				{
+					count++; 
+					c = c->next;
+				}
+				return count;
+			}check = check->next;
+		}return count;
 	}
 };
 
@@ -191,6 +236,7 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	input.addLine("bolo", 23, 20);
 	input.addLine("jeanne", 0, 10);
 	
+	int x = input.transactionCount("andy");
 	input.getUsers(people);
 	//check add priceNode
 	prices.priceChange(0, 30);
