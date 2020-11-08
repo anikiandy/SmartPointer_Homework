@@ -233,7 +233,7 @@ public:
 	{
 		person *checkPerson = HEAD;
 		transaction *checkT = nullptr;
-		n--;
+		//n--;
 		if (n < 0) return false; 
 		while (checkPerson != nullptr)// loop through users
 		{
@@ -281,8 +281,9 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	users input = users(); //list of all users 
 	stockPrices prices = stockPrices(); //list of price changes
 	vector<string>people; //used to hold list of user names
-	int countPipes;//use to determine which data structure to read into
+	int countPipes, tNum;//use to determine which data structure to read into
 	string name, day, price, shares; //store data 
+	transaction tempTrans;
 	
 	//read data into data structure
 	for (string s : v) //iterates through each line
@@ -309,8 +310,24 @@ vector<string> findPotentialBadTraders(vector<string> v)
 		price.clear();
 	}
 
+	input.getUsers(people); //get all names in the 
+
+	for (string s : people) //loops each user
+	{
+		tNum = input.transactionCount(s); //get number of transactions user has done
+		for (int i = 0; i < tNum; i++) //pull each transaction 
+		{
+			input.getTransaction(s, i, tempTrans); //tempTrans populated with values from n transaction
+			cout << s << "Transaction " << i + 1 << ": sharePrice: " << prices.dayPrice(tempTrans.day) << " : proffit: " << prices.dayPrice(tempTrans.day) * tempTrans.shares << endl;
+		
+		}
+		
+	}
+
+
 	return v; // This compiles, but is not correct
 }
+
 void readPrice(string s, string &d, string &p) //reads stock price into variables necessary to make a priceNode
 {
 	int pipes = 0; 
