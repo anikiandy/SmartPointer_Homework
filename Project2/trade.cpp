@@ -311,7 +311,7 @@ vector<string> findPotentialBadTraders(vector<string> v)
 
 	return v; // This compiles, but is not correct
 }
-void readPrice(string s, string &d, string &p)
+void readPrice(string s, string &d, string &p) //reads stock price into variables necessary to make a priceNode
 {
 	int pipes = 0; 
 	for (char c : s)
@@ -332,7 +332,7 @@ void readPrice(string s, string &d, string &p)
 	}
 }
 
-void readTransaction(string s, string &n, string& d, string &shares)
+void readTransaction(string s, string &n, string& d, string &shares) //read transaction into variables needed to add to user datastruct
 {
 	int pipes = 0;
 	string type;
