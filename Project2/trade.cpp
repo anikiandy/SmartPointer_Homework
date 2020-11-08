@@ -4,6 +4,9 @@
 #include <fstream>
 using namespace std;
 
+void readPrice(string s, string &d, string &p);
+void readTransaction(string s, string &n, string& d, string &shares);
+
 struct priceNode
 {
 	int day; 
@@ -275,44 +278,92 @@ public:
 
 vector<string> findPotentialBadTraders(vector<string> v)
 {
-	users input = users();
-	stockPrices prices = stockPrices();
-	vector<string>people;
-	transaction tranny;
-	//check add lines
-	input.addLine("andy", 0, 10);
-	input.addLine("andy", 1, 120);
-	input.addLine("andy", 3, 10);
-	input.addLine("bolo", 23, 20);
-	input.addLine("jeanne", 0, 10);
+	users input = users(); //list of all users 
+	stockPrices prices = stockPrices(); //list of price changes
+	vector<string>people; //used to hold list of user names
+	int countPipes;//use to determine which data structure to read into
+	string name, day, price, shares; //store data 
 	
-	int x = input.transactionCount("andy");
-	input.getTransaction("andy", 2, tranny);
-	input.getUsers(people);
-	//check add priceNode
-	prices.priceChange(0, 30);
-	prices.priceChange(3, 20);
-	prices.priceChange(4, 23);
-	prices.priceChange(6, 240);
-
-	x = prices.dayPrice(5);
-	vector<int>daydos;
-	prices.getChangeDays(daydos);
-
-	for (string s : v) // iterate each string in v
+	//read data into data structure
+	for (string s : v) //iterates through each line
 	{
-		string name;
-		int day, price, shares;
-		for (char c : s) 
+		countPipes = 0; //set pipecount to 0
+		for (char c : s) //count pipes to determine what kind of string it is
 		{
-			
+			if (c == '|') countPipes++;
 		}
+		if (countPipes == 3) //line is a transaction
+		{
+			readTransaction(s, name, day, shares);
+			input.addLine(name, stoi(day), stoi(shares));
+		}
+		else if (countPipes == 1) //line is a date
+		{
+			readPrice(s, day, price);
+			prices.priceChange(stoi(day), stoi(price));
+		}
+		//clear variables
+		name.clear();
+		shares.clear();
+		day.clear();
+		price.clear();
 	}
 
-	//person x = person("andy", 5, -13);
 	return v; // This compiles, but is not correct
 }
+void readPrice(string s, string &d, string &p)
+{
+	int pipes = 0; 
+	for (char c : s)
+	{
+		if (c == '|') //if we hit a pipe increment pipe count and continue loop
+		{
+			pipes++;
+			continue;
+		}
+		if (pipes == 0)
+		{
+			d = d + c;
+		}
+		else if (pipes == 1)
+		{
+			p = p + c;
+		}
+	}
+}
 
+void readTransaction(string s, string &n, string& d, string &shares)
+{
+	int pipes = 0;
+	string type;
+	for (char c : s)
+	{
+		if (c == '|') //if we hit a pipe increment pipe count and continue loop
+		{
+			pipes++;
+			if (type == "BUY") shares = shares + '-';
+			continue;
+		}
+		if (pipes == 0)//this is the day
+		{
+			d = d + c;
+		}
+		else if (pipes == 1)//this is name
+		{
+			n = n + c;
+		}
+		else if (pipes == 2)//this is sale type
+		{
+			type = type + c;
+		}
+
+		else if (pipes == 3) //this is share number
+		{
+			shares = shares + c;
+		}
+	}//iterated through string
+
+}
 int main() {
 
 	ifstream in("input.txt");
@@ -332,4 +383,27 @@ int main() {
 		cout << r << endl;;
 	}
 	return 0;
+	users input = users();
+	stockPrices prices = stockPrices();
+	vector<string>people;
+	transaction tranny;
+	//check add lines
+	input.addLine("andy", 0, 10);
+	input.addLine("andy", 1, 120);
+	input.addLine("andy", 3, 10);
+	input.addLine("bolo", 23, 20);
+	input.addLine("jeanne", 0, 10);
+
+	int x = input.transactionCount("andy");
+	input.getTransaction("andy", 2, tranny);
+	input.getUsers(people);
+	//check add priceNode
+	prices.priceChange(0, 30);
+	prices.priceChange(3, 20);
+	prices.priceChange(4, 23);
+	prices.priceChange(6, 240);
+
+	x = prices.dayPrice(5);
+	vector<int>daydos;
+	prices.getChangeDays(daydos);
 }
