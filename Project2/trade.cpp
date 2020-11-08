@@ -35,7 +35,15 @@ public:
 	
 	~stockPrices()
 	{
-
+		priceNode *del = HEAD;
+		priceNode *lead = HEAD;
+		while (lead != nullptr)
+		{
+			lead = lead->next;
+			delete del;
+			cout << "deleted price Node \n";
+			del = lead;
+		}
 	}
 	void priceChange(int d, int p)
 	{
@@ -134,7 +142,26 @@ public:
 
 	~users() //destructor
 	{
-
+		person *leadPerson = HEAD;
+		person *delPerson = HEAD;
+		transaction *delTrans;
+		transaction *leadTrans;
+		while (leadPerson != nullptr)
+		{
+			delTrans = leadPerson->t;
+			leadTrans = delTrans;
+			while (leadTrans != nullptr)
+			{
+				leadTrans = leadTrans->next;
+				delete delTrans;
+				cout << "deleted transaction \n";
+				delTrans = leadTrans;
+			}// deleted all transaction
+			leadPerson = leadPerson->next;
+			delete delPerson;
+			cout << "deleted person \n";
+			delPerson = leadPerson;
+		}//deleted all people
 	}
 
 	bool isUser(string n)
