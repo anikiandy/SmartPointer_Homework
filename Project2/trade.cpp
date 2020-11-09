@@ -39,6 +39,16 @@ struct user
 	}
 };
 
+int getDay(string s)
+{
+	string stringDay;
+	for (char c : s)
+	{
+		if (c == '|') break;
+		else stringDay = stringDay + c;
+	}
+	return stoi(stringDay);
+}
 class stockPrices
 {
 private:
@@ -152,7 +162,7 @@ vector<string> findPotentialBadTraders(vector<string> v)
 		{
 			if (c == '|') countPipes++;
 		}
-		if (countPipes == 3) //line is a transaction just continue
+		if (countPipes == 3) //line is a transaction add it to transactions vector
 		{
 			transactions.emplace_back(s);
 		}
@@ -214,7 +224,53 @@ vector<string> findPotentialBadTraders(vector<string> v)
 	}
 	v.swap(transactions); //swap input vector with transactions vector
 
-	return v; // This compiles, but is not correct
+//need to format and sort vector v
+	for (vector<string>::iterator it = v.begin();  it!= v.end(); it++)//format by removing shares field
+	{
+		string name, day;
+		int pipeCount = 0; 
+		for (char c : *it)
+		{
+			if (c == '|')
+			{
+				pipeCount++;
+				continue;
+			}
+			if (pipeCount == 0)
+			{
+				day = day + c;
+			}
+			else if (pipeCount == 1)
+			{
+				name = name + c;
+			}
+		}
+		it->clear();
+		*it = day + "|" + name;
+	}
+	bool swap = false;
+	string temp;
+	do 
+	{
+		vector<string>::iterator it = v.begin();
+		vector<string>::iterator itNext = v.begin();
+		itNext++;
+		while (itNext != v.end())
+		{
+			if (getDay(*it) > getDay(*itNext))
+			{
+				temp = *it;
+				*it = *itNext;
+				*itNext = temp;
+				swap = true; 
+			}
+			it++;
+			itNext++;
+		} 
+	
+	} while (swap == true);
+
+	return v; 
 }
 
 void readPrice(string s, string &d, string &p) //reads stock price into variables necessary to make a priceNode
@@ -237,7 +293,6 @@ void readPrice(string s, string &d, string &p) //reads stock price into variable
 		}
 	}
 }
-
 
 int main() {
 
