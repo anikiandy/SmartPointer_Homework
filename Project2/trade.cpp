@@ -57,7 +57,6 @@ public:
 		{
 			lead = lead->next;
 			delete del;
-			cout << "deleted price Node \n";
 			del = lead;
 		}
 	}
@@ -213,7 +212,7 @@ vector<string> findPotentialBadTraders(vector<string> v)
 		}
 		else it++;
 	}
-	v.swap(transactions);
+	v.swap(transactions); //swap input vector with transactions vector
 
 	return v; // This compiles, but is not correct
 }
@@ -260,15 +259,4 @@ int main() {
 	}
 	return 0;
 
-	stockPrices prices = stockPrices();
-	vector<string>people;
-
-
-	//check add priceNode
-	prices.priceChange(0, 30);
-	prices.priceChange(3, 20);
-	prices.priceChange(4, 23);
-	prices.priceChange(6, 240);
-	vector<int>daydos;
-	prices.getChangeDays(daydos);
 }
