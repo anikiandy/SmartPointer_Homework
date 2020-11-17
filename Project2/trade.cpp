@@ -49,6 +49,18 @@ int getDay(string s)
 	}
 	return stoi(stringDay);
 }
+string getName(string s)
+{
+	string name;
+	int pipes = 0;
+	for (char c : s)
+	{
+		if (c == '|')pipes++;
+		else if (pipes == 1) name = name + c;
+		else if (pipes > 1) break;
+	}
+	return name;
+}
 class stockPrices
 {
 private:
@@ -248,10 +260,12 @@ vector<string> findPotentialBadTraders(vector<string> v)
 		it->clear();
 		*it = day + "|" + name;
 	}
+
 	bool swap = false;
 	string temp;
 	do 
 	{
+		swap = false;
 		vector<string>::iterator it = v.begin();
 		vector<string>::iterator itNext = v.begin();
 		itNext++;
@@ -264,12 +278,23 @@ vector<string> findPotentialBadTraders(vector<string> v)
 				*itNext = temp;
 				swap = true; 
 			}
+			else if (getDay(*it) == getDay(*itNext)) // days are the same. 
+			{
+				if (getName(*it).compare(getName(*itNext)) > 0)
+				{
+					temp = *itNext;
+					*itNext = *it;
+					*it = temp;
+					swap = true;
+				}
+			}
 			it++;
 			itNext++;
 		} 
 	
 	} while (swap == true);
 
+	swap = false;
 	return v; 
 }
 
